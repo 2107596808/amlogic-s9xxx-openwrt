@@ -1,0 +1,8 @@
+#!/bin/sh
+# Copyright (C) 2021-2022 OpenWrt.org
+
+[ -e /proc/interrupts ] || exit 0
+
+# Balance interrupts for multi-core systems
+for irq in $(awk -F: '/eth0/ {print $1}' /proc/interrupts); do
+    echo $irq > /proc/irq/$irq/smp_affinity_list
