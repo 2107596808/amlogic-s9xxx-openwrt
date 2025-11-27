@@ -75,6 +75,27 @@ runs:
         echo -e "About the [ ${openwrt_savepath} ] directory: \n$(ls -lh ${openwrt_savepath} 2>/dev/null)"
 
         cd ${{ github.action_path }}
+        
+        # 检查并编译本地设备树文件
+        if [[ -f "your.dts" ]]; then
+            echo -e "Found local device tree file: your.dts"
+            echo -e "Installing device-tree-compiler..."
+            sudo apt-get update
+            sudo apt-get install -y device-tree-compiler
+            echo -e "Compiling device tree: your.dts -> rk3399-orangepi.dtb"
+            dtc -I dts -O dtb -o rk3399-orangepi.dtb your.dts
+            if [[ $? -eq 0 && -f "rk3399-orangepi.dtb" ]]; then
+                echo -e "✅ Device tree compiled successfully: rk3399-orangepi.dtb"
+                echo -e "File size: $(du -h rk3399-orangepi.dtb | cut -f1)"
+                # 复制到临时目录供构建系统使用
+                mkdir -p temp_dtb_files
+                cp rk3399-orangepi.dtb temp_dtb_files/
+            else
+                echo -e "❌ Device tree compilation failed"
+                exit 1
+            fi
+        fi
+        
         echo -e "Start to make openwrt..."
         make_command=""
         [[ -n "${{ inputs.openwrt_board }}" ]] && make_command="${make_command} -b ${{ inputs.openwrt_board }}"
