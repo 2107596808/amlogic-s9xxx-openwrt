@@ -70,6 +70,7 @@ on:
           - nanopi-r5s
           - orangepi-5-plus
           - orangepi-5b
+          - orangepi-rk3399
           - panther-x2
           - photonicat
           - r66s
