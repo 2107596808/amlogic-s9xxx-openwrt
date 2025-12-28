@@ -15,11 +15,11 @@ on:
       releases_branch:
         description: "Select the releases branch"
         required: false
-        default: "openwrt:24.10.4"
+        default: "openwrt:24.10.5"
         type: choice
         options:
+          - openwrt:24.10.5
           - openwrt:24.10.4
-          - openwrt:24.10.3
           - immortalwrt:24.10.4
           - immortalwrt:24.10.3
       openwrt_board:
@@ -32,12 +32,14 @@ on:
           - top55
           - after55
           - a311d-oes_s922x-oes-plus_wxy-oect
+          - nsy-g16-plus_nsy-g68-plus_bdy-g18-pro
           - s905d_s905x3_s912_s922x-ct2000
           - a311d
           - a311d-oes
           - alark35-3500
           - anas3035
           - aio-3399b
+          - bdy-g18-pro
           - beikeyun
           - chainedbox
           - crrc
@@ -52,7 +54,7 @@ on:
           - fine3399
           - firefly-rk3399
           - fmx1-pro
-          - jp-tvbox
+          - gzpeite-p01
           - h28k
           - h66k
           - h68k
@@ -63,6 +65,7 @@ on:
           - hs530r
           - hugsun-x99
           - ipc-r
+          - jp-tvbox
           - king3399
           - kylin3399
           - lckfb-tspi
@@ -72,6 +75,8 @@ on:
           - nanopc-t6
           - nanopi-r5c
           - nanopi-r5s
+          - nsy-g16-plus
+          - nsy-g68-plus
           - orangepi-5-plus
           - orangepi-5b
           - panther-x2
@@ -185,7 +190,7 @@ on:
           - vplus
           - wocyber-a3
           - wxy-oect
-          - wxy-oect-replaced
+          - wxy-oect-mod
           - xiaobao
           - yskj
           - zcube1-max
@@ -194,16 +199,15 @@ on:
       openwrt_kernel:
         description: "Select kernel version"
         required: false
-        default: "5.15.y_6.1.y"
+        default: "6.1.y_6.12.y"
         type: choice
         options:
-          - 5.4.y
           - 5.10.y
           - 5.15.y
           - 6.1.y
           - 6.6.y
           - 6.12.y
-          - 5.4.y_5.10.y
+          - 5.10.y_5.15.y
           - 5.15.y_6.1.y
           - 6.1.y_6.12.y
           - 6.1.y_6.6.y
@@ -254,7 +258,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Initialization environment
         id: init

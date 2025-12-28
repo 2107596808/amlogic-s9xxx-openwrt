@@ -14,7 +14,7 @@ ip_regex="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01
 # Modify default IP if an argument is provided and it matches the IP format
 [[ -n "${1}" && "${1}" != "${default_ip}" && "${1}" =~ ${ip_regex} ]] && {
     echo "Modify default IP address to: ${1}"
-    sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"}/\${ipaddr:-\"${1}\"}/" package/base-files/files/bin/config_generate
+    sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"}/\${ipaddr:-\"${1}\"}/" package/base-files/*/bin/config_generate
 }
 
 # Add the default password for the 'root' user（Change the empty password to 'password'）
@@ -25,6 +25,21 @@ sed -i "s|DISTRIB_REVISION='.*'|DISTRIB_REVISION='R$(date +%Y.%m.%d)'|g" package
 echo "DISTRIB_SOURCEREPO='github.com/openwrt/openwrt'" >>package/base-files/files/etc/openwrt_release
 echo "DISTRIB_SOURCECODE='openwrt'" >>package/base-files/files/etc/openwrt_release
 echo "DISTRIB_SOURCEBRANCH='main'" >>package/base-files/files/etc/openwrt_release
+
+# Set ccache
+# Remove existing ccache settings
+sed -i '/CONFIG_DEVEL/d' .config
+sed -i '/CONFIG_CCACHE/d' .config
+# Apply new ccache configuration
+if [[ "${2}" == "true" ]]; then
+    echo "CONFIG_DEVEL=y" >>.config
+    echo "CONFIG_CCACHE=y" >>.config
+    echo 'CONFIG_CCACHE_DIR="$(TOPDIR)/.ccache"' >>.config
+else
+    echo '# CONFIG_DEVEL is not set' >>.config
+    echo "# CONFIG_CCACHE is not set" >>.config
+    echo 'CONFIG_CCACHE_DIR=""' >>.config
+fi
 #
 # ------------------------------- Main source ends -------------------------------
 
