@@ -49,7 +49,7 @@ fi
 rm -rf package/luci-app-amlogic
 git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
-
+git clone https://github.com/sirpdboy/luci-app-partexp.git package/luci-app-partexp
 #
 # Apply patches
 # git apply ../config/patches/{0001*,0002*}.patch --directory=feeds/luci
